@@ -1,0 +1,6 @@
+<obr>
+    <capability name="vch">
+        <p n="Bundle-Vendor" v="${project.organization.name}" />
+        <p n="bundle" v="true" />
+    </capability>
+</obr>
