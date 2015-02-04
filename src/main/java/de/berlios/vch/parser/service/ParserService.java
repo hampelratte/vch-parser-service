@@ -181,61 +181,69 @@ public class ParserService implements IParserService, IVchUriResolver, ResourceB
 
     private IWebPage lookup(String path) throws Exception {
         if (!path.isEmpty()) {
-            Scanner scanner = new Scanner(path).useDelimiter("/");
-            String parserId = scanner.next();
-            logger.log(LogService.LOG_DEBUG, "Looking for parser " + parserId);
-            IWebParser parser = getParser(parserId);
-            if (parser == null) {
-                throw new Exception("Parser with ID [" + parserId + "] is not available");
-            }
-            IWebPage parent = null;
-            if (scanner.hasNext()) {
-                while (scanner.hasNext()) {
-                    String md5Uri = scanner.next();
-                    IWebPage page = cache.get(md5Uri);
-                    if (page == null) {
-                        logger.log(LogService.LOG_INFO, "Page " + md5Uri + " not found in cache");
-                        // the current page is not in the cache, we have to
-                        // parse the parent page and then add it to the cache
-                        if (parent == null) {
-                            logger.log(LogService.LOG_DEBUG, "Getting root page for parser " + parser.getId());
-                            parent = parser.getRoot();
-                        } else {
-                            logger.log(LogService.LOG_DEBUG, "Parsing parent page " + parent.getTitle());
-                            parent = parser.parse(parent);
-                        }
-                        // we have parsed the parent page, now we can add all
-                        // subpages to the cache. the desired page will then be
-                        // in the cache, too
-                        if (parent instanceof IOverviewPage) {
-                            IOverviewPage opage = (IOverviewPage) parent;
-                            for (IWebPage subpage : opage.getPages()) {
-                                cache.put(md5(subpage.getUri().toString()), subpage);
-                            }
-
-                            // now we can retrieve the desired page from the cache
-                            page = cache.get(md5Uri);
-                        } else {
-                            throw new Exception("Parent page " + md5Uri + " is part of the path, but seems to be an IVideoPage");
-                        }
-                    }
-
-                    // we have found the page. if it is the last element in
-                    // the path, we can return it, otherwise we have to continue
-                    // with the next part
-                    if (scanner.hasNext()) {
-                        parent = page;
-                    } else {
-                        return page;
-                    }
-                }
-            } else {
-                IWebPage page = cache.get(parserId);
-                if (page == null) {
-                    page = parser.getRoot();
-                }
-                return page;
-            }
+        	Scanner scanner = null;
+        	try {
+	            scanner = new Scanner(path);
+	            scanner.useDelimiter("/");
+	            String parserId = scanner.next();
+	            logger.log(LogService.LOG_DEBUG, "Looking for parser " + parserId);
+	            IWebParser parser = getParser(parserId);
+	            if (parser == null) {
+	                throw new Exception("Parser with ID [" + parserId + "] is not available");
+	            }
+	            IWebPage parent = null;
+	            if (scanner.hasNext()) {
+	                while (scanner.hasNext()) {
+	                    String md5Uri = scanner.next();
+	                    IWebPage page = cache.get(md5Uri);
+	                    if (page == null) {
+	                        logger.log(LogService.LOG_INFO, "Page " + md5Uri + " not found in cache");
+	                        // the current page is not in the cache, we have to
+	                        // parse the parent page and then add it to the cache
+	                        if (parent == null) {
+	                            logger.log(LogService.LOG_DEBUG, "Getting root page for parser " + parser.getId());
+	                            parent = parser.getRoot();
+	                        } else {
+	                            logger.log(LogService.LOG_DEBUG, "Parsing parent page " + parent.getTitle());
+	                            parent = parser.parse(parent);
+	                        }
+	                        // we have parsed the parent page, now we can add all
+	                        // subpages to the cache. the desired page will then be
+	                        // in the cache, too
+	                        if (parent instanceof IOverviewPage) {
+	                            IOverviewPage opage = (IOverviewPage) parent;
+	                            for (IWebPage subpage : opage.getPages()) {
+	                                cache.put(md5(subpage.getUri().toString()), subpage);
+	                            }
+	
+	                            // now we can retrieve the desired page from the cache
+	                            page = cache.get(md5Uri);
+	                        } else {
+	                            throw new Exception("Parent page " + md5Uri + " is part of the path, but seems to be an IVideoPage");
+	                        }
+	                    }
+	
+	                    // we have found the page. if it is the last element in
+	                    // the path, we can return it, otherwise we have to continue
+	                    // with the next part
+	                    if (scanner.hasNext()) {
+	                        parent = page;
+	                    } else {
+	                        return page;
+	                    }
+	                }
+	            } else {
+	                IWebPage page = cache.get(parserId);
+	                if (page == null) {
+	                    page = parser.getRoot();
+	                }
+	                return page;
+	            }
+        	} finally {
+        		if(scanner != null) {
+        			scanner.close();
+        		}
+        	}
         }
         return null;
     }
