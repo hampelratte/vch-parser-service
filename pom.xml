@@ -37,17 +37,17 @@
             <version>[1.0.0,2.0.0)</version>
         </dependency>
         <dependency>
-        	<groupId>de.berlios.vch</groupId>
-        	<artifactId>uri.resolver</artifactId>
-        	<type>bundle</type>
-        	<scope>provided</scope>
+            <groupId>de.berlios.vch</groupId>
+            <artifactId>uri.resolver</artifactId>
+            <type>bundle</type>
+            <scope>provided</scope>
             <version>[1.0.0,2.0.0)</version>
         </dependency>
         <dependency>
-        	<groupId>de.berlios.vch</groupId>
-        	<artifactId>parser</artifactId>
-        	<type>bundle</type>
-        	<scope>provided</scope>
+            <groupId>de.berlios.vch</groupId>
+            <artifactId>parser</artifactId>
+            <type>bundle</type>
+            <scope>provided</scope>
             <version>[3.0.0,4.0.0)</version>
         </dependency>
         <dependency>
