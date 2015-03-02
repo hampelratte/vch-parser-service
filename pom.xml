@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>parser.service</artifactId>
     <packaging>bundle</packaging>
-    <version>1.1.4</version>
+    <version>1.1.5-SNAPSHOT</version>
     <name>VCH Parser Service</name>
     <description>A service, which bundes all parsers in one central place.</description>
 
