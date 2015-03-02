@@ -14,6 +14,12 @@
         <relativePath>../vch-parent/pom.xml</relativePath>
     </parent>
 
+    <scm>
+        <connection>scm:git:git@github.com/hampelratte/vch-parser-service.git</connection>
+        <developerConnection>scm:git:git@github.com:hampelratte/vch-parser-service.git</developerConnection>
+        <url>https://github.com/hampelratte/vch-parser-service.git</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>de.berlios.vch</groupId>
